@@ -14,100 +14,48 @@
               @php
               use App\Content;
               use App\Menu;
-
-              // $content = Menu::with('content')->where([['status','=',1],['delete_status','=',1],['menu_status','=',1]])->latest()->get();
               $content = Menu::with('content')->where([['status','=',1],['delete_status','=',1],['menu_status','=',1],['parent_id','=',0]])->latest()->get();
-              // $content = Menu::where([['status','=',1],['delete_status','=',1]])->with('Content')->latest()->get();
-              // $contentMenu=$content->toArray();
-
-              // $contentD = Menu::with('content')->where([['status','=',1],['delete_status','=',1],['menu_status','=',1]])->latest()->get();
-              // $contentDrop=$contentD->toArray();
               @endphp
-            <ul class="navbar-nav ml-auto">
-              @foreach($content as $menu)
-        @if($menu->children->count() > 0)
 
-        <div class="dropdown mt-2">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{$menu->name}}
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            @foreach($menu->children as $submenu)
-            {{-- <a class="dropdown-item" href="#">{{$submenu->name}}</a> --}}
-              @if(is_numeric($submenu['content_id']))
-              <a class="dropdown-item" href="{{url('contentview/'.$submenu['content']['slug'])}}">{{$submenu->name}}</a>
-              @else
-              <a class="dropdown-item" href="{{url(''.$submenu['content_id'])}}">{{$submenu->name}}</a>
-            </li>
-            @endif
-            @endforeach
-          </div>
-        </div>
-   {{--      <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            {{$menu->name}}
-            <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              @foreach($menu->children as $submenu)
-              <li><a href="#">{{$submenu->name}}</a></li>
-              @endforeach
-            </ul>
-          </li> --}}
-
-
-
-               @else
-
-{{--  --}}
-                <li class="nav-item">
-                  @if(is_numeric($menu['content_id']))
-                  <a class="nav-link" href="{{url('contentview/'.$menu['content']['slug'])}}">{{$menu['name']}}</a>
-                  @else
-                  <a class="nav-link" href="{{url(''.$menu['content_id'])}}">{{$menu['name']}}</a>
-                </li>
-                @endif
-              {{--  --}}
-               
-               @endif
+              <ul class="navbar-nav ml-auto">
+                @foreach($content as $menu)
                 
+                @if($menu->children->count() > 0) {{-- first if start here --}}
+
+                <div class="dropdown mt-2">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{$menu->name}}
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    
+                  {{-- ***Start foreach --}}  @foreach($menu->children as $submenu)
+                    
+                {{-- **Start if --}}    @if(is_numeric($submenu['content_id']))
+                    <a class="dropdown-item" href="{{url('contentview/'.$submenu['content']['slug'])}}">{{$submenu->name}}</a>
+                    @else
+                    <a class="dropdown-item" href="{{url(''.$submenu['content_id'])}}">{{$submenu->name}}</a>
+                  </li>
+                  @endif {{-- End if** --}}
+                 
+                  @endforeach {{-- End foreach *** --}}
+                </div>
+              </div>
 
 
+              @else {{-- first if-> else condition --}}
+
+              <li class="nav-item">
+                @if(is_numeric($menu['content_id']))
+                <a class="nav-link" href="{{url('contentview/'.$menu['content']['slug'])}}">{{$menu['name']}}</a>
+                @else
+                <a class="nav-link" href="{{url(''.$menu['content_id'])}}">{{$menu['name']}}</a>
+              </li>
+              @endif  {{-- End first if condition --}}   
+
+              @endif
               @endforeach   
             </ul>
-{{-- @php
-  $categories = Menu::with('content')->where([['status','=',1],['delete_status','=',1],['menu_status','=',1],['parent_id','=',0]])->latest()->get();
-@endphp
-            <ul class="navbar-nav ml-auto">
-                  @foreach($categories as $item)
-                  @if($item->children->count() > 0)
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      {{$item->name}}
-                      <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                        @foreach($item->children as $submenu)
-                        <li><a href="#">{{$submenu->name}}</a></li>
-                        @endforeach
-                      </ul>
-                    </li>
-                    @else
-                    <li><a href="">{{$item->name}}</a></li>
-                    @endif
-                    @endforeach
-                  </ul> --}}
 
-
-      {{--       @foreach($contentDrop as $menuDrop)
-            <div class="dropdown">
-              <a class="btn btn-secondary dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Hello
-              </a>
-
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">ad</a>
-              </div>
-            </div>
-            @endforeach --}}
             <!--<div class=""> -->
             <div class="flex-center position-ref full-height">
               @if (Route::has('login'))
