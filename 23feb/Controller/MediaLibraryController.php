@@ -173,7 +173,10 @@ if ($request->hasFile('image')) {
     {
         //medium is from route::list
         $image_path = public_path().'/'.$medium->filename;
+        if(file_exists($image_path)){
+            
         unlink($image_path);
+        }
         $medium->delete();
         // dd($profiles);
         // below line for id call

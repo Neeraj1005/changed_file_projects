@@ -10,11 +10,12 @@ use App\Tag;
 use App\User;
 use App\mediaLibrary;
 use Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 class ArticleController extends Controller
 {
     /**
@@ -134,7 +135,7 @@ class ArticleController extends Controller
         $mimetype = $image->getClientMimeType();//Get MIME type
 
         // $photo = mediaLibrary::create([['filename'=>$path],['mime'=>$mimetype],['extension'=>$extension],['original_filename'=>$originalname],['imgsize'=>$imgsizes],['width'=>$width],['height'=>$height]]);
-        $photo = mediaLibrary::create(['filename'=>$path,'mime'=>$mimetype,'extension'=>$extension,'original_filename'=>$originalname,'imgsize'=>$imgsizes,'width'=>$width,'height'=>$height]);
+        $photo = mediaLibrary::create(['filename'=>Str::replaceLast('\\','/',$path),'mime'=>$mimetype,'extension'=>$extension,'original_filename'=>$originalname,'imgsize'=>$imgsizes,'width'=>$width,'height'=>$height]);
 
 
         $records['image'] = $photo->id;
@@ -246,7 +247,7 @@ class ArticleController extends Controller
         //find category Slug
           $categorySlug = Category::findOrFail($request->category_id);
           
-          $mediacheck = mediaLibrary::first();//getting media id for else if condtion below
+          $mediacheck = mediaLibrary::where('id',$records->image)->first();//getting media id for else if condtion below
            
         if(Auth::user()->user_type != 'Admin_User'){
 
@@ -286,7 +287,7 @@ class ArticleController extends Controller
 
 if($records['image']===Null){
 $photo = mediaLibrary::create([
-                                'filename'=>$path,
+                                'filename'=>Str::replaceLast('\\','/',$path),
                                 'mime'=>$mimetype,
                                 'extension'=>$extension,
                                 'original_filename'=>$originalname,
@@ -298,7 +299,7 @@ $photo = mediaLibrary::create([
 }
 elseif ($records['image']!=$mediacheck['id']) {
   $photo = mediaLibrary::create([
-                                  'filename'=>$path,
+                                  'filename'=>Str::replaceLast('\\','/',$path),
                                   'mime'=>$mimetype,
                                   'extension'=>$extension,
                                   'original_filename'=>$originalname,
@@ -309,7 +310,7 @@ elseif ($records['image']!=$mediacheck['id']) {
 }
 else{
   $photo = mediaLibrary::where('id',$records['image'])->update([
-    'filename'=>$path,
+    'filename'=>Str::replaceLast('\\','/',$path),
     'mime'=>$mimetype,
     'extension'=>$extension,
     'original_filename'=>$originalname,
