@@ -58,8 +58,11 @@ if ($request->hasFile('image')) {
         $extension = $image->getClientOriginalExtension();//Getting extension
         $originalname = $image->getClientOriginalName();//Getting original name
         //this code will store image in laravel default storage folder $path = $image->storeAs('', $originalname);
+
+
         $path = $image->move('uploads/media/mainMedia/', $originalname);//This will store in customize folder
-        // $path = $image->move('uploads/media/'.Str::replaceLast("\\", "/", $originalname));
+
+        // $path = $image->move('uploads/media/', Str::replaceLast("\\", "/", $originalname));
         // $path = $image->move(Str::replaceFirst("\\", "/", $originalname));//This will store and create new folder
         $imgsizes = $path->getSize();
         $size = getimagesize($path);
@@ -77,7 +80,8 @@ if ($request->hasFile('image')) {
         $picture->extension = $extension;
         $picture->width = $width;
         $picture->height = $height;
-        $picture->filename = $path;
+        // $picture->filename = $path;
+        $picture->filename = Str::replaceLast('\\','/',$path);
         // $picture->filename = $image->getFilename().'.'.$extension;
         // $path = $image->storeAs('', $picture->original_filename);
         // $picture->filename = $filename;       
@@ -150,8 +154,8 @@ if ($request->hasFile('image')) {
                         $data->extension = $extension;
                         $data->width = $width;
                         $data->height = $height;
-                        $data->filename = $path;
-
+                        // $data->filename = $path;
+                        $data->filename = Str::replaceLast('\\','/',$path);
                         $data->save();
                     }
                 }
