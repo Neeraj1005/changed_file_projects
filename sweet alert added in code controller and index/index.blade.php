@@ -6,7 +6,7 @@
 
 
 <div class="content-wrapper">
-	<div class="content-header py-2 border--bottom shadow-2 mb-2">
+  <div class="content-header py-2 border--bottom shadow-2 mb-2">
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
@@ -41,11 +41,11 @@
         <thead>
             <tr>
               <th width="30">
-				<div class="custom-control custom-checkbox text-center pl-3">
-					<input type="checkbox" class="checkbox custom-control-input" id="check_all">
-					<label class="custom-control-label ml-2" for="check_all"></label>
-				</div>
-			</th>
+        <div class="custom-control custom-checkbox text-center pl-3">
+          <input type="checkbox" class="checkbox custom-control-input" id="check_all">
+          <label class="custom-control-label ml-2" for="check_all"></label>
+        </div>
+      </th>
               <th>Title</th>
             <?php if($usertype == "administrator"){?> <th>Author </th> <?php }?>
             <th>Image</th> 
@@ -64,13 +64,13 @@
 
          @foreach($articles as $val)
         <tr>
-		
+    
             <td width="20">
-				<div class="custom-control custom-checkbox">
-				  <input type="checkbox" class="checkbox custom-control-input" id="{{$val->id}}" data-id="{{$val->id}}">
-				  <label class="custom-control-label ml-2" for="{{$val->id}}"></label>
-				</div>
-			</td>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="checkbox custom-control-input" id="{{$val->id}}" data-id="{{$val->id}}">
+          <label class="custom-control-label ml-2" for="{{$val->id}}"></label>
+        </div>
+      </td>
             @if($val->draft===1)
             <td><a href="{{ url('viewArticle',$val->aslug) }}" target="_blank" >{{ $val->title }} </a></td>
             @else
@@ -129,7 +129,7 @@
               </td>
                
             <td>
-					@can('article-edit')
+          @can('article-edit')
                     <a class="btn btn-sm btn-outline-secondary btn-sml mr-2" href="{{ route('articles.edit',$val->id) }}"><i class="fa fa-pencil text-secondary" aria-hidden="true"></i></a>
                     @endcan 
               <!--<form action="{{ route('articles.destroy',$val->id) }}" method="POST">
@@ -147,14 +147,14 @@
 
     </table>
        </div>
-	    <script type="text/javascript">
+      <script type="text/javascript">
                         $('.confirmation').on('click', function () {
                             return confirm('Are you sure want to delete?');
                         });
                     </script>
-	  <div class="border-top bg-white card-footer text-muted">
+    <div class="border-top bg-white card-footer text-muted">
          <button class="btn btn-sm btn-outline-secondary delete-all" data-url=""><i class="fa fa-trash mr-1" aria-hidden="true"></i>Delete </button>      
-		</div>
+    </div>
 @include('includes/datatable')
       <!-- /.card-body --> 
     </div>
@@ -246,7 +246,13 @@ $(document).ready(function(){
                   $(this).parents("tr").remove();
 
                 });
-                alert(data['message']);
+                // alert(data['message']);
+                 swal({
+                  title: data['message'],
+                  // text: "You clicked the button!",
+                  icon: "info",
+                  button: "Okk",
+                });
 
                 } else {
                   alert('Whoops Something went wrong!!');
